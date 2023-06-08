@@ -5,3 +5,13 @@ body {
 div {
     margin: 20px;
 }
+
+.button-field {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.no-click {
+    pointer-events: none;
+}
