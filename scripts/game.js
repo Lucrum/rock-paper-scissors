@@ -87,14 +87,17 @@ function setupGame(event, maxPoints = 5) {
     playField.appendChild(computerPointField);
     playButton.addEventListener('click', gameStart);
 
-    gameStart("Begin!");
+    // null as first arg due to eventListener
+    gameStart(null, "Begin!");
 }
 
-function gameStart(message = "New round!") {
+// resets game logic
+function gameStart(event, message = "New round!") {
     gameActive = true;
     playerPoints = 0;
     computerPoints = 0;
-    messageField.textContent = "New round!";
+    toggleChoices(true);
+    messageField.textContent = message;
     playerPointField.textContent = "Your score: " + playerPoints;
     computerPointField.textContent = "Computer score: " + computerPoints;
 }
@@ -115,8 +118,7 @@ function doRound(event) {
             computerPoints++;
         }
 
-        console.log(playerPoints + ' ' + victoryLevel);
-
+        // checking for game over status
         if (playerPoints >= victoryLevel) {
             gameOver(true);
         }
@@ -134,14 +136,22 @@ function doRound(event) {
 
 function gameOver(victoryStatus) {
     gameActive = false;
-    choices = buttonField.querySelectorAll('.player-choice');
-    console.log(choices);
-
-    [...choices].forEach(btn => btn.classList.add('no-click'));
+    toggleChoices(false);
 
     if (victoryStatus) {
         messageField.textContent = "You win!";
     } else {
         messageField.textContent = "You lost!";
+    }
+}
+
+// enables or disables choice buttons
+// by default will turn on buttons
+function toggleChoices(status = true) {
+    choices = buttonField.querySelectorAll('.player-choice');
+    if (status) {
+        [...choices].forEach(btn => btn.classList.remove('no-click'));
+    } else {
+        [...choices].forEach(btn => btn.classList.add('no-click'));
     }
 }
